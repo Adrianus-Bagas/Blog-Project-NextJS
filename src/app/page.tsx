@@ -1,27 +1,45 @@
 "use client";
 
 import { useLogin } from "@/service/auth/hooks";
+import { authAtom } from "@/store/app.atom";
+import { useAtom } from "jotai";
 import Image from "next/image";
-import { FormEventHandler, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useCallback, useState } from "react";
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [auth, setAuth] = useAtom(authAtom);
+  const router = useRouter();
 
   const login = useLogin();
-  const onLogin: FormEventHandler<HTMLFormElement> = (form) => {
-    form.preventDefault();
-    const formData = new FormData(form.currentTarget);
-    const username = formData.get("username");
-    const password = formData.get("password");
 
-    if (typeof username === "string" && typeof password === "string") {
-      login({
-        username,
-        password,
-      });
-    }
-  };
+  const onLogin = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (username && password) {
+        login(
+          { username, password },
+          {
+            onSuccess: (data) => {
+              setAuth({
+                id: data.id,
+                token: data.token,
+                isAuthenticated: true,
+                username: data.username,
+                firstname: data.firstName,
+              });
+              Cookies.set("ID", data.id.toString());
+              router.push("/home");
+            },
+          }
+        );
+      }
+    },
+    [username, password, login]
+  );
   return (
     <>
       <div className="h-screen">

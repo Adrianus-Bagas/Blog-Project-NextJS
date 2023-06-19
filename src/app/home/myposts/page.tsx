@@ -4,11 +4,14 @@ import Card from "@/components/Card";
 import { useGetUserPost } from "@/service/users/hooks";
 import { authAtom } from "@/store/app.atom";
 import { useAtom } from "jotai";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 export default function PostPage() {
+
+  const ID = Cookies.get("ID")
   const [authState] = useAtom(authAtom);
-  const { data, isLoading, isFetching } = useGetUserPost(authState.id);
+  const { data, isLoading, isFetching } = useGetUserPost(parseInt(ID!));
   const [page, setPage] = useState<number>(1);
   const [userPost, setUserPost] = useState([]);
   const [isDisabledNext, setIsDisabledNext] = useState<boolean>(false);

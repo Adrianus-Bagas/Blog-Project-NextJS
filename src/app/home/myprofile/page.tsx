@@ -4,12 +4,16 @@ import ProfileCard from "@/components/ProfileCard";
 import { useGetUserById } from "@/service/users/hooks";
 import { authAtom } from "@/store/app.atom";
 import { useAtom } from "jotai";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function MyProfile() {
+
+  const ID = Cookies.get("ID");
+
   const [authState, setAuthState] = useAtom(authAtom);
-  const { data, isLoading } = useGetUserById(authState.id);
+  const { data, isLoading } = useGetUserById(parseInt(ID!));
   const [hiddenGeneral, setHiddenGeneral] = useState<string>("display");
   const [hiddenAddress, setHiddenAddress] = useState<string>("hidden");
   const [hiddenJob, setHiddenJob] = useState<string>("hidden");

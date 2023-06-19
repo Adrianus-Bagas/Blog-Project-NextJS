@@ -21,7 +21,7 @@ const HydrateAtoms = ({
 
 const QueryProviders = ({ children }: { children: JSX.Element }) => {
   const [client] = useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 5000 } } })
+    new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } })
   );
 
   return (

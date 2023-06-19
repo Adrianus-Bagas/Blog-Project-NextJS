@@ -16,14 +16,6 @@ const initAuthState: LoginInterface = {
 export const isLoading = atom<boolean>(false)
 export const authAtom = atom(initAuthState)
 
-// export const [loginAuth] = atomsWithMutation(() => ({
-//     mutationKey: ["Auth Login"],
-//     mutationFn: async (body: LoginBodyInterface) => {
-//         const data = await LoginService(body)
-//         return data
-//     }
-// }))
-
 export const [postsDataAtom] = atomsWithQuery(() => ({
     queryKey: ['posts-data'],
     queryFn: async () => {
